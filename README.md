@@ -1,9 +1,11 @@
-DEMO REST API REACTJS 
+DEMO REST API REACTJS + HOOK
 
-Installation
+#Installation
 
 npm install
 
-npm run json:server
+#RUN APP
+
+npm run server
 
 npm run react

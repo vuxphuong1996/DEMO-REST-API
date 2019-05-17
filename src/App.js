@@ -1,124 +1,94 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import User from './User'
 import AddUser from './AddUser'
 import axios from 'axios';
 import { Container, Modal, ModalHeader, ModalBody, Input, Label, Form, FormGroup, Button } from 'reactstrap';
 
-class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      user: [],
-      editUser: {
-        id: '',
-        name: '',
-        email: ''
-      },
-      editModal: false,
-    }
-  }
+const App = () => {
+  const [user, setUser] = useState([])
+  const [editUser, setEditUser] = useState({ id: '', name: '', email: '' })
+  const [editModal, setEditModal] = useState(false)
 
-  componentDidMount = () => {
-    this.refreshUser()
-  }
-
-  addUser = (user) => {
-    axios.post(`http://localhost:3000/user`, user).then((res) => {
-      const { user } = this.state
-      user.push(res.data)
-      this.setState({ user })
-    })
-  }
-
-  removeUser = (id) => {
-    axios.delete(`http://localhost:3000/user/${id}`).then((res) => {
-      const { user } = this.state
-      user.splice(res.data.id, 1)
-      this.setState({ user })
-      this.refreshUser()
-    })
-  }
-
-  editUser = (id, name, email) => {
-    this.setState({
-      editUser: {
-        id,
-        name,
-        email
-      },
-      editModal: !this.state.editModal
-    })
-  }
-
-  handleEditUser = (e) => {
-    e.preventDefault()
-    const { name, email } = this.state.editUser
-    axios.put(`http://localhost:3000/user/${this.state.editUser.id}`, {
-      name,
-      email
-    }).then((res) => {
-      this.refreshUser()
-      this.setState({
-        editModal: false,
-        editUser: {
-          id: '',
-          name: '',
-          email: ''
-        }
-      })
-    })
-  }
-
-  toggleEditModal = () => {
-    this.setState(prevState => ({
-      editModal: !prevState.editModal
-    }));
-  }
-  refreshUser = () => {
+  const refreshUser = () => {
     axios.get(`http://localhost:3000/user`).then(
-      res => this.setState({ user: res.data })
+      res => setUser(res.data)
     )
   }
 
-  render() {
-    const { user } = this.state
-    const { name, email } = this.state.editUser
-    return (
-      <Container>
-        <AddUser addUser={this.addUser} />
-        <User user={user} removeUser={this.removeUser} editUser={this.editUser} />
+  useEffect(() => {
+    refreshUser()
+  }, [])
 
-        <Modal isOpen={this.state.editModal} toggle={this.toggleEditModal} className={this.props.className}>
-          <ModalHeader toggle={this.toggleEditModal}>Edit User</ModalHeader>
-          <ModalBody>
-            <Form onSubmit={this.handleEditUser}>
-
-              <FormGroup>
-                <Label for="exampleName">Name</Label>
-                <Input type="text" name="name" id="exampleName" value={name} onChange={(e) => {
-                  let { editUser } = this.state
-                  editUser.name = e.target.value
-                  this.setState({ editUser })
-                }} />
-              </FormGroup>
-
-              <FormGroup>
-                <Label for="exampleEmail">Email</Label>
-                <Input type="email" name="email" id="exampleEmail" value={email} onChange={(e) => {
-                  let { editUser } = this.state
-                  editUser.email = e.target.value
-                  this.setState({ editUser })
-                }} />
-              </FormGroup>
-
-              <Button>Submit</Button>
-            </Form>
-          </ModalBody>
-        </Modal>
-
-      </Container>
-    );
+  const addUser = (userif) => {
+    axios.post(`http://localhost:3000/user`, userif).then((res) => {
+      user.push(res.data)
+      setUser(user)
+      refreshUser()
+    })
   }
+
+  const removeUser = (id) => {
+    axios.delete(`http://localhost:3000/user/${id}`).then((res) => {
+      user.splice(res.data.id, 1)
+      setEditUser(user)
+      refreshUser()
+    })
+  }
+
+  const editUserIf = (id, name, email) => {
+    setEditUser({ id, name, email })
+    setEditModal(!editModal)
+  }
+
+  const handleEditUser = (e) => {
+    e.preventDefault()
+    const { name, email } = editUser
+    axios.put(`http://localhost:3000/user/${editUser.id}`, {
+      name,
+      email
+    }).then((res) => {
+      refreshUser()
+      setEditModal(false)
+      setEditUser({ id: '', name: '', email: '' })
+    })
+  }
+
+  const toggleEditModal = () => {
+    setEditModal(!editModal)
+  }
+
+  console.log(user)
+  return (
+    <Container>
+      <AddUser addUser={addUser} />
+      <User user={user} removeUser={removeUser} editUser={editUserIf} />
+
+      <Modal isOpen={editModal} toggle={toggleEditModal}>
+        <ModalHeader toggle={toggleEditModal}>Edit User</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleEditUser}>
+
+            <FormGroup>
+              <Label for="exampleName">Name</Label>
+              <Input type="text" name="name" id="exampleName" value={editUser.name} onChange={(e) => {
+                setEditUser({ ...editUser, name: e.target.value })
+              }} />
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="exampleEmail">Email</Label>
+              <Input type="email" name="email" id="exampleEmail" value={editUser.email} onChange={(e) => {
+                setEditUser({ ...editUser, email: e.target.value })
+              }} />
+            </FormGroup>
+
+            <Button>Submit</Button>
+          </Form>
+        </ModalBody>
+      </Modal>
+
+    </Container>
+  );
 }
 
 export default App;
