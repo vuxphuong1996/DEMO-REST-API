@@ -25,7 +25,7 @@ const User = ({ editUser, removeUser, user }) => {
 						<Col>{person.name}</Col>
 						<Col>{person.email}</Col>
 						<Col>
-							<Button color="success" onClick={() => handleEdit(person.id, person.name, person.email)}>Edit</Button>
+							<Button color="primary" onClick={() => handleEdit(person.id, person.name, person.email)}>Edit</Button>
 							<Button color="danger" onClick={() => handleDelete(person.id)}>X</Button>
 						</Col>
 					</Row>

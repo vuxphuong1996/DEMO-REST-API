@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0; }
+
+.container button {
+  margin: 20px 0px; }
+
+.modal-content h2 {
+  text-align: center; }
+
+.modal-content button {
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 1rem; }

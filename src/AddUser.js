@@ -16,9 +16,12 @@ const AddUser = ({ addUser }) => {
     }
 
     return (
-        <Container>
-            <Button color="danger" onClick={toggle}>Add User</Button>
+        <div>
+            <Button color="danger" outline color="primary" onClick={toggle}>Add User</Button>
+            
             <Modal isOpen={modal} toggle={toggle}>
+                <h2>ADD USER FORM</h2>
+                <Container>
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
                         <Label for="exampleId">Id</Label>
@@ -38,10 +41,11 @@ const AddUser = ({ addUser }) => {
                             setUser({ ...user, email: e.target.value })
                         }} />
                     </FormGroup>
-                    <Button>Submit</Button>
+                    <Button outline color="success">Add User</Button>
                 </Form>
+                </Container>
             </Modal>
-        </Container>
+        </div>
     )
 }
 

@@ -82,7 +82,7 @@ const App = () => {
               }} />
             </FormGroup>
 
-            <Button>Submit</Button>
+            <Button outline color="success">Save</Button>
           </Form>
         </ModalBody>
       </Modal>

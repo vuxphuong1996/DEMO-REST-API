@@ -8,6 +8,7 @@
     "bootstrap": "^4.3.1",
     "gh-pages": "^2.0.1",
     "json-server": "^0.14.2",
+    "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -28,7 +29,9 @@
     "test": "react-scripts test",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "css": "node-sass src/style.scss dest/style.css",
+    "sass": "node-sass -w src/ -o dest/"
   },
   "eslintConfig": {
     "extends": "react-app"
