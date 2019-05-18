@@ -8,9 +8,10 @@ const App = () => {
   const [user, setUser] = useState([])
   const [editUser, setEditUser] = useState({ id: '', name: '', email: '' })
   const [editModal, setEditModal] = useState(false)
+  const url = `http://localhost:3000/user`
 
   const refreshUser = () => {
-    axios.get(`http://localhost:3000/user`).then(
+    axios.get(url).then(
       res => setUser(res.data)
     )
   }
@@ -20,7 +21,7 @@ const App = () => {
   }, [])
 
   const addUser = (userif) => {
-    axios.post(`http://localhost:3000/user`, userif).then((res) => {
+    axios.post(url, userif).then((res) => {
       user.push(res.data)
       setUser(user)
       refreshUser()
@@ -28,7 +29,7 @@ const App = () => {
   }
 
   const removeUser = (id) => {
-    axios.delete(`http://localhost:3000/user/${id}`).then((res) => {
+    axios.delete(url+`/${id}`).then((res) => {
       user.splice(res.data.id, 1)
       setEditUser(user)
       refreshUser()
@@ -43,7 +44,7 @@ const App = () => {
   const handleEditUser = (e) => {
     e.preventDefault()
     const { name, email } = editUser
-    axios.put(`http://localhost:3000/user/${editUser.id}`, {
+    axios.put(url+`/${editUser.id}`, {
       name,
       email
     }).then((res) => {

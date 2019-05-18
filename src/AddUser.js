@@ -17,7 +17,7 @@ const AddUser = ({ addUser }) => {
 
     return (
         <div>
-            <Button color="danger" outline color="primary" onClick={toggle}>Add User</Button>
+            <Button outline color="primary" onClick={toggle}>Add User</Button>
             
             <Modal isOpen={modal} toggle={toggle}>
                 <h2>ADD USER FORM</h2>
